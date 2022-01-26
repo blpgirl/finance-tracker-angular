@@ -1,25 +1,38 @@
 <h1>My Portfolio</h1>
 
-<div class='search-area'>
+<div class='search-area' id="stock-lookup" ng-controller="stocksController">
   <h3>Search Stocks</h3>
-  <!--- remote: true to submit with ajax --->
-  <%= form_tag search_stock_path, remote: true, method: :get do %>
+  <!--- with angular we want to separate front-end and back-end so here all html --->
+  <form action="/search_stock" accept-charset="UTF-8" data-remote="true"
+      method="get" id="stock-lookup-form" ng-submit="lookup()">
     <div class="form-group row">
       <div class="col-sm-9 no-right-padding">
         <!--- params[:stock] to get the value from get url so /my_portfolio?stock= --->
-        <%= text_field_tag :stock, params[:stock], placeholder: "Stock ticker symbol", autofocus: true, class: "form-control form-control-lg" %>
+        <input type="text" name="stock" id="stock_ticker" placeholder="Stock ticker symbol"
+          autofocus="autofocus" class="form-control form-control-lg" ng-model="ticker">
       </div>
       <div class="col-sm-3 no-left-padding">
-        <%= button_tag type: :submit, class: "btn btn-success" do %>
-          <%= fa_icon 'search 2x' %>
-        <% end %>
+        <button name="button" type="submit" class="btn btn-success">
+          <i class="fa fa-search fa-2x"></i>
+          </button>
       </div>
     </div>
-  <% end %>
-</div>
-<div id="results">
+  </form>
+    <div class="results-block ng-hide" >
+      <%= render 'layouts/messages' %>
+    </div>
+
+    <div class="card card-header results-block ng-hide" id="stock-lookup-results"
+          ng-show="stock.name !=undefined">
+          <strong>Symbol: </strong> {{stock.symbol}}
+          <strong>Name: </strong> {{stock.name}}
+          <strong>Price: </strong> {{stock.last_price}}
+          <a href="#" class="btn btn-sm btn-success">Add to portfolio</a>
+          <span class="badge badge-secondary label label-default"></span>
+    </div>
 
 </div>
+
 <% if !@tracked_stocks.empty? %>
   <%= render 'stocks/list'%>
 <% end %>

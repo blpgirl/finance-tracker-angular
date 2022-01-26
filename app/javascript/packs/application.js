@@ -4,6 +4,7 @@
 // that code so it'll be compiled.
 
 import 'bootstrap'
+import 'angular'
 import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
@@ -13,4 +14,5 @@ Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 
+// this is where i will write my angular code in app.js
 require("app")

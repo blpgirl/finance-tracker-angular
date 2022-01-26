@@ -8,14 +8,19 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.1/angular.js"></script>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 
   </head>
 
-  <body ng-app="FinanceTrackerApp">
+  <body ng-app="FinanceTrackerApp" >
     <%= render 'layouts/navigation' %>
 
+    <!----- Toca ponerle al body ng-controller="angularctrl" y descomentar en app.js
+      First Name: {{fname}}<br />
+      First Name: {{person.fname}}<br />
+      Last Name:  {{lname}}<br />
+
+      Full Name: <b>{{getname()}}<br /> -----!>
     <div class="container">
       <%= render 'layouts/messages' %>
       <%= yield %>
