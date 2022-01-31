@@ -7,7 +7,9 @@ class StocksController < ApplicationController
       @stock = Stock.new_lookup(params[:stock])
       # check if it found the stock in the api
       if @stock
-        render json: @stock
+        # define a can be added method for stock, also defined in stock model
+        @stock.can_be_added = current_user.can_track_stock?(@stock.ticker)
+        render json: @stock, methods: [:can_be_added]
       else
         render status: 404, json: { response: 'No stock exists for this symbol.' }
       end

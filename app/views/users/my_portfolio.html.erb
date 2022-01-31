@@ -27,7 +27,7 @@
           <strong>Symbol: </strong> {{stock.symbol}}
           <strong>Name: </strong> {{stock.name}}
           <strong>Price: </strong> {{stock.last_price}}
-          <a href="#" class="btn btn-sm btn-success">Add to portfolio</a>
+          <a href="#" class="btn btn-sm btn-success" ng-show="stock.can_be_added">Add to portfolio</a>
           <span class="badge badge-secondary label label-default"></span>
     </div>
 

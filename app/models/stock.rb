@@ -4,6 +4,8 @@ class Stock < ApplicationRecord
 
   validates :name, :ticker, presence: true
 
+  attr_accessor :can_be_added
+
   # self.method_name is to be able to call it from the class without instiatate it
   def self.new_lookup(ticker_symbol)
     client = IEX::Api::Client.new(
