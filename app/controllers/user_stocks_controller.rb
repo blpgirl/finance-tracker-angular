@@ -1,4 +1,6 @@
 class UserStocksController < ApplicationController
+  protect_from_forgery with: :exception, unless: -> { request.format.json? }
+  skip_before_action :authenticate_user!
 
   def create
     # check if the stock is already in the database
@@ -18,7 +20,7 @@ class UserStocksController < ApplicationController
 
     @user_stock = UserStock.create(user: current_user, stock: stock)
     flash[:notice] = "Stock #{stock.name} was successfully added to your portfolio"
-    redirect_to my_portfolio_path
+    render json: { response: flash[:notice] }, status: :ok
   end
 
   def destroy

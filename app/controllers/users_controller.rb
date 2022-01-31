@@ -3,6 +3,10 @@ class UsersController < ApplicationController
     # defferent than in alpha_blog with devise gem the current_user is already defined
     @user = current_user
     @tracked_stocks = current_user.stocks
+    respond_to do |format|
+        format.html { render :my_portfolio }
+        format.js   { render partial: 'stocks/list.html' }
+    end
   end
 
   def show

@@ -19,6 +19,12 @@ app.factory('stockService', ['$http', function($http){
           stockApi.searchStocks = function(symbol){
                 return $http.get('/search_stock.json?stock=' + symbol);
           }
+
+          stockApi.addStockToPortfolio = function(symbol) {
+                // call create on user_stocks controller
+                return $http.post('/user_stocks.json?ticker=' + symbol);
+          }
+
           return stockApi;
   }]);
 
@@ -45,6 +51,7 @@ app.controller('stocksController', function($scope, stockService) {
                            .then(function(response){
                              $scope.stock = {
                                error: null,
+                               message: null,
                                symbol: response.data.ticker,
                                name: response.data.name,
                                last_price: response.data.last_price,
@@ -61,4 +68,25 @@ app.controller('stocksController', function($scope, stockService) {
       }
       //console.log($scope.stock);
     } // scope lookup function
+
+    $scope.add = function(){
+          if($scope.stock != undefined && $scope.stock.symbol != ''){
+              // then is because is asynchronous call so we have to wait for it
+                stockService.addStockToPortfolio($scope.stock.symbol)
+                         .then(function(response){
+                           $scope.stock.error    = null;
+                           $scope.stock.message  = response.data.response;
+                           $scope.stock.name     = null;
+                           $scope.ticker         = null;
+                           // this will call users controller my portfolio as js format
+                           $('#stock-list').load('my_portfolio.js');
+                         },
+                         function(response){
+                           $scope.stock = {};
+                           $scope.stock.error = response.data.response;
+                         });
+          } else {
+                $scope.stock.error = "Stock cannot be added";
+          }
+    } // scope add function
 });
