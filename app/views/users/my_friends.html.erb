@@ -1,22 +1,51 @@
 <h1>Friends</h1>
 
-<div class='search-area'>
+<div class='search-area' id="friends-lookup" ng-controller="friendsController">
   <h3>Search Friends</h3>
-  <%= form_tag search_friend_path, remote: true, method: :get do %>
-    <div class="form-group row">
-      <div class="col-sm-9 no-right-padding">
-        <%= text_field_tag :friend, params[:friend], placeholder: "Name or email", autofocus: true, class: "form-control form-control-lg" %>
-      </div>
-      <div class="col-sm-3 no-left-padding">
-        <%= button_tag type: :submit, class: "btn btn-success" do %>
-          <%= fa_icon 'search 2x' %>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
-</div>
 
-<div id="friend-results">
+  <form id="friend-lookup-form" ng-submit="lookup()">
+        <div class="form-group row">
+          <div class="col-sm-9 no-right-padding">
+            <input type="text" id="friend-search-param"
+                   placeholder="Enter name or email" class="form-control search-box form-control-lg input-lg"
+                   autofocus="true" name="friend" ng-model="friend_search_param" />
+          </div>
+          <div class="col-sm-3 no-left-padding">
+            <button class="btn btn-lg btn-success" type="submit">
+              <i class="fa fa-search fa-lg"></i>
+            </button>
+          </div>
+        </div>
+  </form>
+
+    <div id="sfriend-lookup-status" class="results-block alert alert-success ng-hide" ng-show="friends.message">
+      {{friends.message}}
+    </div>
+
+    <div id="friend-lookup-errors" class="results-block alert alert-danger ng-hide" ng-show="friends.error">
+      {{friends.error}}
+    </div>
+
+  <div class="card card-header results-block ng-hide" id="friend-lookup-results" ng-show="friends.list.length > 0">
+    <table class="col-md-12 search-results-table">
+      <tbody ng-repeat="friend in friends.list">
+          <tr>
+            <td><strong>Name: </strong> {{friend.name}}</td>
+            <td><strong>Email: </strong> {{friend.email}}</td>
+            <td><strong>Actions: </strong>
+              <a href="{{friend.profile_path}}" class="btn btn-xs btn-success">View Profile</a>
+                <button ng-click="add(friend.id)" class="btn btn-xs btn-success ng-hide"
+                       ng-show="!friend.friends_already">
+                  Add as my friend
+                </button>
+                <span class="label label-primary ng-hide" ng-show="friend.friends_already">
+                  You are friends
+                </span>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
 
 </div>
 

@@ -23,6 +23,10 @@ nav .container form input.form-control{display:inline !important; width: auto;}
 .results-block {
     display: inline-block;
     margin-bottom: 1rem;
+
+    td {
+        padding: 2px;
+    }
 }
 
 .logout-button {

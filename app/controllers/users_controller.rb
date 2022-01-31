@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+
   def my_portfolio
     # defferent than in alpha_blog with devise gem the current_user is already defined
     @user = current_user
@@ -19,26 +20,35 @@ class UsersController < ApplicationController
   end
 
   def search
-   if params[:friend].present?
+   if params[:search_param].present?
      # calls the search method in the model
-     @friends = User.search(params[:friend])
+     @friends = User.search(params[:search_param])
      # from the friends list remove the current logged in user (i can't friend myself)
      @friends = current_user.except_current_user(@friends)
      # the format.js is to handle the search result with javascript for ajax
      if @friends
-       respond_to do |format|
-         format.js { render partial: 'users/friend_result' }
-       end
+       # respond_to do |format|
+         # format.js { render partial: 'users/friend_result' }
+       # end
+       @friends.map! do |user|
+            user.profile_path = user_path(user)
+            user.friends_already = current_user.friends_with?(user.id)
+            user.name = user.full_name
+            user
+        end
+        render json: @friends, methods: [:profile_path, :friends_already, :name]
      else
        respond_to do |format|
-         flash.now[:alert] = "Couldn't find user"
-         format.js { render partial: 'users/friend_result' }
+         flash.now[:alert] = "No users match this search criteria"
+         render status: 404, json: { response: 'No users match this search criteria.' }
+         # format.js { render partial: 'users/friend_result' }
        end
      end
    else
      respond_to do |format|
        flash.now[:alert] = "Please enter a friend name or email to search"
-       format.js { render partial: 'users/friend_result' }
+       render status: 404, json: { response: 'Please enter a friend name or email to search' }
+       # format.js { render partial: 'users/friend_result' }
      end # else
    end # if present
  end # search

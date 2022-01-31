@@ -1,5 +1,5 @@
 class StocksController < ApplicationController
-  skip_before_action :authenticate_user!
+  #skip_before_action :authenticate_user!
 
   def search
     # check if the get param stock is defined

@@ -1,6 +1,6 @@
 class UserStocksController < ApplicationController
   protect_from_forgery with: :exception, unless: -> { request.format.json? }
-  skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [:create]
 
   def create
     # check if the stock is already in the database
