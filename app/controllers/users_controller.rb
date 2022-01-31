@@ -17,6 +17,10 @@ class UsersController < ApplicationController
 
   def my_friends
     @friends = current_user.friends
+    respond_to do |format|
+        format.html { render :my_friends }
+        format.js   { render partial: 'friends/list.html'}
+    end
   end
 
   def search

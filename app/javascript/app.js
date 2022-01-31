@@ -98,7 +98,7 @@ app.factory('friendService', ['$http', function($http){
          }
 
          friendApi.addFriend = function(id) {
-            return return $http.post('/add_friend.json?friend='+id);
+            return $http.post('/add_friend.json?friend='+id);
         }
         return friendApi;
 }]);
@@ -133,6 +133,7 @@ app.controller('friendsController', function($scope, friendService) {
                       $scope.friend_search_param = null;
                       $scope.friends.error   = null;
                       $scope.friends.message = response.data.response;
+                      $('#friends-list').load('my_friends.js');
                   },
                   function(response){
                       $scope.friends.error = response.data.response;
